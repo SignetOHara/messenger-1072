@@ -1,9 +1,6 @@
 const Sequelize = require("sequelize");
 
-const db = new Sequelize('messenger', 'postgres', `${process.env.PASSWORD}`, {
-  host: 'localhost',
-  dialect: 'postgres',
-});
+const db = new Sequelize(`postgres://${process.env.NAME}:${process.env.PASSWORD}@${process.env.HOST}:5432/${process.env.DBNAME}`)
 
 // Test connection
 const test = async () => {
