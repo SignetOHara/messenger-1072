@@ -1,21 +1,23 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
 import { SenderBubble, OtherUserBubble } from '../ActiveChat';
+import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
+
+const useStyles = makeStyles(() => ({
+	root: {
+		display: 'flex',
+		flexDirection: 'column-reverse',
+	},
+}));
 
 const Messages = (props) => {
 	const { messages, otherUser, userId } = props;
-
-	// Copy array first, then sort by id.
-	const newMessages = messages
-		.map((message) => {
-			return { ...message };
-		})
-		.sort((a, b) => a.id - b.id);
+	const classes = useStyles();
 
 	return (
-		<Box>
-			{newMessages.map((message) => {
+		<Box className={classes.root}>
+			{messages.map((message) => {
 				const time = moment(message.createdAt).format('h:mm');
 
 				return message.senderId === userId ? (
