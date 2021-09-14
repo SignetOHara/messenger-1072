@@ -26,7 +26,7 @@ const SnackbarError = (props) => {
             className={classes.icon}
             size="small"
             onClick={() => props.setSnackBarOpen(false)}>
-            <Close color="secondary" />
+            <Close color="#B0B0B0" />
           </Button>
         </React.Fragment>
       }
