@@ -9,12 +9,14 @@ import {
 	TextField,
 	FormHelperText,
 	CssBaseline,
+	Hidden,
+	Box,
 } from '@material-ui/core';
 import { ReactComponent as BubbleIcon } from './components/assets/bubble.svg';
 import { makeStyles } from '@material-ui/core/styles';
 import { register } from './store/utils/thunkCreators';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
 	root: {
 		height: '100vh',
 	},
@@ -38,11 +40,34 @@ const useStyles = makeStyles(() => ({
 		fontWeight: 400,
 	},
 	bubble: {
-		marginBottom: '39px',
+		marginBottom: '2.5rem',
 	},
-	existingUserSection: {
-		padding: '1.875rem 2.625rem',
-    height: '',
+	paper: {
+		margin: theme.spacing(5, 5),
+		width: '100%',
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
+	},
+	existingUserText: {
+		marginRight: '2rem',
+		color: '#b0b0b0',
+		fontSize: '.875rem',
+	},
+	h1Box: {
+		alignSelf: 'flex-start',
+	},
+	formSection: {
+		height: '100%',
+		maxWidth: '380px',
+	},
+	form: {
+		width: '100%',
+		marginTop: theme.spacing(1.5),
+	},
+	inputContainer: {
+		width: '100%',
+		marginBottom: '2.5rem',
 	},
 	button: {
 		boxShadow: '0px 2px 12px rgba(74,106,149,0.2)',
@@ -81,121 +106,148 @@ const Login = (props) => {
 	return (
 		<Grid className={classes.root} container component="main">
 			<CssBaseline />
-			<Grid item xs={false} sm={4} md={5} className={classes.image}>
-				<Grid
-					container
-					justifyContent="center"
-					alignItems="center"
-					component="aside"
-					direction="column"
-					className={classes.overlay}
-				>
-					<BubbleIcon className={classes.bubble} />
-					<Typography
-						component="h2"
-						variant="h1"
-						className={classes.textOverlay}
+			<Hidden smDown>
+				<Grid item xs={false} sm={4} md={5} className={classes.image}>
+					<Grid
+						container
+						justifyContent="center"
+						alignItems="center"
+						component="aside"
+						direction="column"
+						className={classes.overlay}
 					>
-						Converse with anyone <br /> with any language
-					</Typography>
+						<BubbleIcon className={classes.bubble} />
+						<Typography
+							component="h2"
+							variant="h1"
+							className={classes.textOverlay}
+						>
+							Converse with anyone <br /> with any language
+						</Typography>
+					</Grid>
 				</Grid>
-			</Grid>
-			<Grid container item xs={12} sm={8} md={7}>
-				<Grid
-					container
-					alignItems="baseline"
-					justifyContent="flex-end"
-					item
-					className={classes.existingUserSection}
-				>
-					<Typography component="h3">
-						Already have an account?
-					</Typography>
-					<Button
-						className={classes.button}
-						onClick={() => history.push('/login')}
-						color="secondary"
+			</Hidden>
+			<Grid container item xs={12} sm={12} md={7}>
+				<div className={classes.paper}>
+					<Grid
+						container
+						alignItems="baseline"
+						justifyContent="flex-end"
+						item
+						wrap="nowrap"
+						className={classes.existingUserSection}
 					>
-						Login
-					</Button>
-				</Grid>
-				<Grid
-					container
-					justifyContent="flex-start"
-					alignItems="center"
-					direction="column"
-				>
-					<Typography component="h1">Create an account</Typography>
-					<form onSubmit={handleRegister}>
-						<Grid>
-							<Grid>
-								<FormControl>
-									<TextField
-										aria-label="username"
-										label="Username"
-										name="username"
-										type="text"
-										required
-									/>
-								</FormControl>
-							</Grid>
-							<Grid>
-								<FormControl>
-									<TextField
-										label="E-mail address"
-										aria-label="e-mail address"
-										type="email"
-										name="email"
-										required
-									/>
-								</FormControl>
-							</Grid>
-							<Grid>
-								<FormControl
-									error={!!formErrorMessage.confirmPassword}
-								>
-									<TextField
-										aria-label="password"
-										label="Password"
-										type="password"
-										inputProps={{ minLength: 6 }}
-										name="password"
-										required
-									/>
-									<FormHelperText>
-										{formErrorMessage.confirmPassword}
-									</FormHelperText>
-								</FormControl>
-							</Grid>
-							<Grid>
-								<FormControl
-									error={!!formErrorMessage.confirmPassword}
-								>
-									<TextField
-										label="Confirm Password"
-										aria-label="confirm password"
-										type="password"
-										inputProps={{ minLength: 6 }}
-										name="confirmPassword"
-										required
-									/>
-									<FormHelperText>
-										{formErrorMessage.confirmPassword}
-									</FormHelperText>
-								</FormControl>
-							</Grid>
-							<Button
-								className={classes.button}
-								type="submit"
-								color="primary"
-								variant="contained"
-								size="large"
+						<Typography
+							className={classes.existingUserText}
+							component="h3"
+						>
+							Already have an account?
+						</Typography>
+						<Button
+							className={classes.button}
+							onClick={() => history.push('/login')}
+							color="secondary"
+						>
+							Login
+						</Button>
+					</Grid>
+					<Grid
+						className={classes.formSection}
+						container
+						justifyContent="center"
+						alignItems="center"
+						direction="column"
+					>
+						<Box className={classes.h1Box}>
+							<Typography component="h1" variant="h1">
+								Create an account.
+							</Typography>
+						</Box>
+						<form
+							onSubmit={handleRegister}
+							className={classes.form}
+						>
+							<Grid
+								container
+								alignItems="center"
+								direction="column"
 							>
-								Create
-							</Button>
-						</Grid>
-					</form>
-				</Grid>
+								<Grid className={classes.inputContainer}>
+									<FormControl style={{ width: '100%' }}>
+										<TextField
+											aria-label="username"
+											label="Username"
+											name="username"
+											type="text"
+											required
+											fullWidth
+										/>
+									</FormControl>
+								</Grid>
+								<Grid className={classes.inputContainer}>
+									<FormControl style={{ width: '100%' }}>
+										<TextField
+											label="E-mail address"
+											aria-label="e-mail address"
+											type="email"
+											name="email"
+											required
+										/>
+									</FormControl>
+								</Grid>
+								<Grid className={classes.inputContainer}>
+									<FormControl
+										style={{ width: '100%' }}
+										error={
+											!!formErrorMessage.confirmPassword
+										}
+									>
+										<TextField
+											aria-label="password"
+											label="Password"
+											type="password"
+											inputProps={{ minLength: 6 }}
+											name="password"
+											required
+										/>
+										<FormHelperText>
+											{formErrorMessage.confirmPassword}
+										</FormHelperText>
+									</FormControl>
+								</Grid>
+								<Grid className={classes.inputContainer}>
+									<FormControl
+										style={{ width: '100%' }}
+										error={
+											!!formErrorMessage.confirmPassword
+										}
+									>
+										<TextField
+											label="Confirm Password"
+											aria-label="confirm password"
+											type="password"
+											inputProps={{ minLength: 6 }}
+											name="confirmPassword"
+											required
+										/>
+										<FormHelperText>
+											{formErrorMessage.confirmPassword}
+										</FormHelperText>
+									</FormControl>
+								</Grid>
+								<Button
+									className={classes.button}
+									type="submit"
+									color="primary"
+									variant="contained"
+									size="large"
+								>
+									Create
+								</Button>
+							</Grid>
+						</form>
+					</Grid>
+				</div>
 			</Grid>
 		</Grid>
 	);
