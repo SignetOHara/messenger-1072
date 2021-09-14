@@ -38,9 +38,10 @@ const useStyles = makeStyles((theme) => ({
 		color: '#fff',
 		textAlign: 'center',
 		fontWeight: 400,
+    marginBottom: theme.spacing(8),
 	},
 	bubble: {
-		marginBottom: '2.5rem',
+		marginBottom: theme.spacing(5),
 	},
 	paper: {
 		margin: theme.spacing(5, 5),
@@ -49,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 		flexDirection: 'column',
 		alignItems: 'center',
 	},
-	existingUserText: {
+	topText: {
 		marginRight: '2rem',
 		color: '#b0b0b0',
 		fontSize: '.875rem',
@@ -67,12 +68,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 	inputContainer: {
 		width: '100%',
-		marginBottom: '2.5rem',
+		marginBottom: theme.spacing(5),
 	},
 	button: {
 		boxShadow: '0px 2px 12px rgba(74,106,149,0.2)',
-		width: '140px',
-		height: '54px',
+		minWidth: '140px',
+		maxWidth: '160px',
+		height: '56px',
 		lineHeight: '19px',
 		borderRadius: '5px',
 	},
@@ -135,12 +137,8 @@ const Login = (props) => {
 						justifyContent="flex-end"
 						item
 						wrap="nowrap"
-						className={classes.existingUserSection}
 					>
-						<Typography
-							className={classes.existingUserText}
-							component="h3"
-						>
+						<Typography className={classes.topText} component="h3">
 							Already have an account?
 						</Typography>
 						<Button
@@ -180,7 +178,6 @@ const Login = (props) => {
 											name="username"
 											type="text"
 											required
-											fullWidth
 										/>
 									</FormControl>
 								</Grid>
