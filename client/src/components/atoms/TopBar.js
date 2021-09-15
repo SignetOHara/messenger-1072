@@ -14,7 +14,6 @@ const useStyles = makeStyles(() => ({
 		height: '56px',
 		lineHeight: '19px',
 		borderRadius: '5px',
-		letterSpacing: '12',
 	},
 }));
 
