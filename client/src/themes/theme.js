@@ -12,14 +12,32 @@ export const theme = createTheme({
 		},
 		h1: {
 			fontSize: '1.625rem',
-      lineHeight: '2.5rem',
-      fontWeight: '600',
+			lineHeight: '2.5rem',
+			fontWeight: '600',
 		},
 	},
 	overrides: {
 		MuiInput: {
 			input: {
 				fontWeight: 'bold',
+        fontSize: '14px',
+				paddingLeft: '5px',
+        marginTop: '1rem',
+			},
+		},
+		MuiInputLabel: {
+			root: {
+				paddingLeft: '5px',
+        fontSize: '19px',
+			},
+		},
+		MuiPaper: {
+			root: {
+				padding: '30px 42px',
+				width: '100%',
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center',
 			},
 		},
 	},

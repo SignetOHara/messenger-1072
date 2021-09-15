@@ -1,59 +1,25 @@
 import React, { useState } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
 	Grid,
 	Typography,
-	Button,
 	FormControl,
 	TextField,
 	FormHelperText,
-	CssBaseline,
-	Hidden,
 	Box,
+	Paper,
 } from '@material-ui/core';
-import { ReactComponent as BubbleIcon } from './components/assets/bubble.svg';
 import { makeStyles } from '@material-ui/core/styles';
 import { register } from './store/utils/thunkCreators';
+
+import MainImg from './components/atoms/MainImg';
+import TopBar from './components/atoms/TopBar';
+import PrimaryBtn from './components/atoms/PrimaryBtn';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		height: '100vh',
-	},
-	image: {
-		backgroundImage: `url("/bg-img.png")`,
-		backgroundRepeat: 'no-repeat',
-		backgroundSize: 'cover',
-		backgroundPosition: 'top',
-		position: 'relative',
-	},
-	overlay: {
-		opacity: '85%',
-		background: 'linear-gradient(180deg, #3A8DFF, #86B9FF)',
-		position: 'absolute',
-		height: '100%',
-		width: '100%',
-	},
-	textOverlay: {
-		color: '#fff',
-		textAlign: 'center',
-		fontWeight: 400,
-    marginBottom: theme.spacing(8),
-	},
-	bubble: {
-		marginBottom: theme.spacing(5),
-	},
-	paper: {
-		margin: theme.spacing(5, 5),
-		width: '100%',
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-	},
-	topText: {
-		marginRight: '2rem',
-		color: '#b0b0b0',
-		fontSize: '.875rem',
 	},
 	h1Box: {
 		alignSelf: 'flex-start',
@@ -61,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
 	formSection: {
 		height: '100%',
 		maxWidth: '380px',
+		position: 'relative',
+		bottom: '-2rem',
+		right: '0.5rem',
 	},
 	form: {
 		width: '100%',
@@ -68,21 +37,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 	inputContainer: {
 		width: '100%',
-		marginBottom: theme.spacing(5),
-	},
-	button: {
-		boxShadow: '0px 2px 12px rgba(74,106,149,0.2)',
-		minWidth: '140px',
-		maxWidth: '160px',
-		height: '56px',
-		lineHeight: '19px',
-		borderRadius: '5px',
 	},
 }));
 
 const Login = (props) => {
 	const classes = useStyles();
-	const history = useHistory();
 	const { user, register } = props;
 	const [formErrorMessage, setFormErrorMessage] = useState({});
 
@@ -107,48 +66,15 @@ const Login = (props) => {
 
 	return (
 		<Grid className={classes.root} container component="main">
-			<CssBaseline />
-			<Hidden smDown>
-				<Grid item xs={false} sm={4} md={5} className={classes.image}>
-					<Grid
-						container
-						justifyContent="center"
-						alignItems="center"
-						component="aside"
-						direction="column"
-						className={classes.overlay}
-					>
-						<BubbleIcon className={classes.bubble} />
-						<Typography
-							component="h2"
-							variant="h1"
-							className={classes.textOverlay}
-						>
-							Converse with anyone <br /> with any language
-						</Typography>
-					</Grid>
-				</Grid>
-			</Hidden>
+			<MainImg />
 			<Grid container item xs={12} sm={12} md={7}>
-				<div className={classes.paper}>
-					<Grid
-						container
-						alignItems="baseline"
-						justifyContent="flex-end"
-						item
-						wrap="nowrap"
-					>
-						<Typography className={classes.topText} component="h3">
-							Already have an account?
-						</Typography>
-						<Button
-							className={classes.button}
-							onClick={() => history.push('/login')}
-							color="secondary"
-						>
-							Login
-						</Button>
-					</Grid>
+				<Paper>
+					<TopBar
+						topText="Already have an account?"
+						btnText="Login"
+						to="/login"
+						width="140px"
+					/>
 					<Grid
 						className={classes.formSection}
 						container
@@ -182,7 +108,10 @@ const Login = (props) => {
 									</FormControl>
 								</Grid>
 								<Grid className={classes.inputContainer}>
-									<FormControl style={{ width: '100%' }}>
+									<FormControl
+										style={{ width: '100%' }}
+										margin="normal"
+									>
 										<TextField
 											label="E-mail address"
 											aria-label="e-mail address"
@@ -198,6 +127,7 @@ const Login = (props) => {
 										error={
 											!!formErrorMessage.confirmPassword
 										}
+										margin="normal"
 									>
 										<TextField
 											aria-label="password"
@@ -218,6 +148,7 @@ const Login = (props) => {
 										error={
 											!!formErrorMessage.confirmPassword
 										}
+										margin="normal"
 									>
 										<TextField
 											label="Confirm Password"
@@ -232,19 +163,11 @@ const Login = (props) => {
 										</FormHelperText>
 									</FormControl>
 								</Grid>
-								<Button
-									className={classes.button}
-									type="submit"
-									color="primary"
-									variant="contained"
-									size="large"
-								>
-									Create
-								</Button>
+								<PrimaryBtn text={'Create'} />
 							</Grid>
 						</form>
 					</Grid>
-				</div>
+				</Paper>
 			</Grid>
 		</Grid>
 	);
