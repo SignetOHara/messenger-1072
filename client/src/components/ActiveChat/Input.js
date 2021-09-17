@@ -34,25 +34,23 @@ const Input = (props) => {
 		setText(event.target.value);
 	};
 
-	const prepareMessage = async (event, images) => {
-		// add sender user info if posting to a brand new convo, so that the other user will have access to username, profile pic, etc.
-		const reqBody = {
-			text: event.target.text.value,
-			recipientId: otherUser.id,
-			conversationId,
-			sender: conversationId ? null : user,
-			attachments: images,
-		};
-		await postMessage(reqBody);
-		setLoading(false);
-		setFiles([]);
-		setText('');
+	const handleSelectFile = (e) => {
+		let allFiles = [];
+		for (let i = 0; i < e.target.files.length; i++) {
+			allFiles.push(e.target.files[i]);
+		}
+		if (allFiles.length > 0) {
+			setFiles(allFiles);
+		}
 	};
 
 	const handleUpload = async (event) => {
-		// Prevent form submit
 		event.preventDefault();
+		const savedText = event.target.text.value;
+
+		// Enable spinner and clear text input, storing value in savedText variable
 		setLoading(true);
+		setText('');
 
 		// Create form data for each image and new empty array
 		const formData = new FormData();
@@ -79,29 +77,30 @@ const Input = (props) => {
 					imageIds.push(public_id);
 				});
 		}
-		prepareMessage(event, imageIds);
+		prepareMessage(imageIds, savedText);
 	};
 
-	const handleSelectFile = (e) => {
-		let allFiles = [];
-		for (let i = 0; i < e.target.files.length; i++) {
-			allFiles.push(e.target.files[i]);
-		}
-		if (allFiles.length > 0) {
-			setFiles(allFiles);
-		}
+	const prepareMessage = async (images, savedText) => {
+		// add sender user info if posting to a brand new convo, so that the other user will have access to username, profile pic, etc.
+		const reqBody = {
+			text: savedText,
+			recipientId: otherUser.id,
+			conversationId,
+			sender: conversationId ? null : user,
+			attachments: images,
+		};
+		await postMessage(reqBody);
+		setLoading(false);
+		setFiles([]);
 	};
-
-	let previewArea;
-	if (loading) {
-		previewArea = <CircularProgress style={{ marginBottom: '1rem' }} />;
-	} else if (files) {
-		previewArea = <ImgPreview files={files} setFiles={setFiles} />;
-	}
 
 	return (
 		<form className={classes.root} onSubmit={handleUpload}>
-			{previewArea}
+			{loading ? (
+				<CircularProgress style={{ marginBottom: '1rem' }} />
+			) : (
+				<ImgPreview files={files} setFiles={setFiles} />
+			)}
 			<FormControl fullWidth hiddenLabel>
 				<FilledInput
 					classes={{ root: classes.input }}
