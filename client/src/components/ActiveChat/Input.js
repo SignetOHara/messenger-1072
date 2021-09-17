@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormControl, FilledInput } from '@material-ui/core';
+import { FormControl, FilledInput, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { postMessage } from '../../store/utils/thunkCreators';
@@ -12,6 +12,7 @@ const useStyles = makeStyles(() => ({
 	root: {
 		justifySelf: 'flex-end',
 		marginTop: 15,
+		textAlign: 'center',
 	},
 	input: {
 		height: 70,
@@ -25,23 +26,25 @@ const Input = (props) => {
 	const classes = useStyles();
 	const [text, setText] = useState('');
 	const [files, setFiles] = useState([]);
-	
+	const [loading, setLoading] = useState(false);
+
 	const { postMessage, otherUser, conversationId, user } = props;
 
 	const handleChange = (event) => {
 		setText(event.target.value);
 	};
 
-	const prepareMessage = async (event, results) => {
+	const prepareMessage = async (event, images) => {
 		// add sender user info if posting to a brand new convo, so that the other user will have access to username, profile pic, etc.
 		const reqBody = {
 			text: event.target.text.value,
 			recipientId: otherUser.id,
 			conversationId,
 			sender: conversationId ? null : user,
-			attachments: results,
+			attachments: images,
 		};
 		await postMessage(reqBody);
+		setLoading(false);
 		setFiles([]);
 		setText('');
 	};
@@ -49,6 +52,7 @@ const Input = (props) => {
 	const handleUpload = async (event) => {
 		// Prevent form submit
 		event.preventDefault();
+		setLoading(true);
 
 		// Create form data for each image and new empty array
 		const formData = new FormData();
@@ -88,9 +92,16 @@ const Input = (props) => {
 		}
 	};
 
+	let previewArea;
+	if (loading) {
+		previewArea = <CircularProgress style={{ marginBottom: '1rem' }} />;
+	} else if (files) {
+		previewArea = <ImgPreview files={files} setFiles={setFiles} />;
+	}
+
 	return (
 		<form className={classes.root} onSubmit={handleUpload}>
-			{files && <ImgPreview files={files} setFiles={setFiles} />}
+			{previewArea}
 			<FormControl fullWidth hiddenLabel>
 				<FilledInput
 					classes={{ root: classes.input }}
