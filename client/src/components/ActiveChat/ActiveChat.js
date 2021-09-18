@@ -4,16 +4,15 @@ import { Box } from "@material-ui/core";
 import { Input, Header, Messages } from "./index";
 import { connect } from "react-redux";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexGrow: 8,
     flexDirection: "column"
   },
   chatContainer: {
-    marginLeft: 41,
-    marginRight: 41,
-    marginBottom: 41,
+    margin: theme.spacing(5),
+    marginTop: 0,
     display: "flex",
     flexDirection: "column",
     flexGrow: 1,

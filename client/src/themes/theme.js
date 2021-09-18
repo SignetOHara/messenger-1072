@@ -15,20 +15,23 @@ export const theme = createTheme({
 			lineHeight: '2.5rem',
 			fontWeight: '600',
 		},
+		small: {
+			fontSize: '11px',
+		},
 	},
 	overrides: {
 		MuiInput: {
 			input: {
 				fontWeight: 'bold',
-        fontSize: '14px',
+				fontSize: '14px',
 				paddingLeft: '5px',
-        marginTop: '1rem',
+				marginTop: '1rem',
 			},
 		},
 		MuiInputLabel: {
 			root: {
 				paddingLeft: '5px',
-        fontSize: '19px',
+				fontSize: '19px',
 			},
 		},
 		MuiPaper: {
@@ -44,5 +47,7 @@ export const theme = createTheme({
 	palette: {
 		primary: { main: '#3A8DFF' },
 		secondary: { main: '#3A8DFF' },
+		background: { bubble: '#F4F6FA' },
+		small: { main: '#BECCE2' },
 	},
 });
