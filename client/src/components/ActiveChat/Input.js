@@ -64,27 +64,34 @@ const Input = (props) => {
     // Create form data for each image and new empty array
     const formData = new FormData();
     let imageIds = [];
-    for (let i = 0; i < files.length; i++) {
-      let file = files[i];
-      formData.append('file', file);
-      formData.append('upload_preset', 'upload');
 
-      // post the formData to Cloudinary but wait until all images uploaded and ids pushed to array
-      await fetch(
-        'https://api.cloudinary.com/v1_1/dco37iiel/image/upload',
-        {
-          method: 'POST',
-          body: formData,
-        }
-      )
-        .then((response) => {
-          return response.text();
-        })
-        .then((data) => {
+    // Promise.allSettled as each async upload is independent of each other
+    try {
+      await Promise.allSettled(
+        files.map(async (file) => {
+          formData.append('file', file);
+          formData.append('upload_preset', 'upload');
+          const response = await fetch(
+            'https://api.cloudinary.com/v1_1/dco37iiel/image/upload',
+            {
+              method: 'POST',
+              body: formData,
+            }
+          );
+
+          // A fetch() promise does not reject on HTTP errors so we need error handling
+          if (!response.ok) {
+            throw Error(response.statusText);
+          }
+
+          const data = await response.text();
           const imgObj = JSON.parse(data);
           const { public_id } = imgObj;
           imageIds.push(public_id);
-        });
+        })
+      );
+    } catch (error) {
+      console.log(error);
     }
     prepareMessage(imageIds, savedText);
   };
