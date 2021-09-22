@@ -9,17 +9,17 @@ import { theme } from './themes/theme';
 import Routes from './routes';
 
 function App() {
-	return (
-		<Provider store={store}>
-			<MuiThemeProvider theme={theme}>
-				<CloudinaryContext cloudName="dco37iiel" secure="true" upload_preset="upload">
-					<BrowserRouter>
-						<Routes />
-					</BrowserRouter>
-				</CloudinaryContext>
-			</MuiThemeProvider>
-		</Provider>
-	);
+  return (
+    <Provider store={store}>
+      <MuiThemeProvider theme={theme}>
+        <CloudinaryContext cloudName="dco37iiel" secure="true" upload_preset="upload">
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
+        </CloudinaryContext>
+      </MuiThemeProvider>
+    </Provider>
+  );
 }
 
 export default App;

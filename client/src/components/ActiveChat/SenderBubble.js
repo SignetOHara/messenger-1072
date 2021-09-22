@@ -26,10 +26,12 @@ const SenderBubble = (props) => {
   const classes = useStyles();
   const { time, text, images } = props;
 
+  console.log(images);
+
   let height = '150';
   let width = '150';
 
-  if (images.length > 1) {
+  if (images && images.length > 1) {
     height = '100';
     width = '100';
   }
