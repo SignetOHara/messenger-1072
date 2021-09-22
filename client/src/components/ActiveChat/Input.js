@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import { postMessage } from '../../store/utils/thunkCreators';
+import { postMessage, uploadImages } from '../../store/utils/thunkCreators';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import ImgPreview from './ImgPreview';
 
@@ -60,39 +60,7 @@ const Input = (props) => {
     // Enable spinner and clear text input, storing value in savedText variable
     setLoading(true);
     setText('');
-
-    // Create form data for each image and new empty array
-    const formData = new FormData();
-    let imageIds = [];
-
-    // Promise.allSettled as each async upload is independent of each other
-    try {
-      await Promise.allSettled(
-        files.map(async (file) => {
-          formData.append('file', file);
-          formData.append('upload_preset', 'upload');
-          const response = await fetch(
-            'https://api.cloudinary.com/v1_1/dco37iiel/image/upload',
-            {
-              method: 'POST',
-              body: formData,
-            }
-          );
-
-          // A fetch() promise does not reject on HTTP errors so we need error handling
-          if (!response.ok) {
-            throw Error(response.statusText);
-          }
-
-          const data = await response.text();
-          const imgObj = JSON.parse(data);
-          const { public_id } = imgObj;
-          imageIds.push(public_id);
-        })
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    const imageIds = await uploadImages(files);
     prepareMessage(imageIds, savedText);
   };
 
